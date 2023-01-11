@@ -1,0 +1,362 @@
+{
+	"info": {
+		"_postman_id": "8b3de148-f27e-42a0-b0da-4d983775c458",
+		"name": "trello.collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23975946"
+	},
+	"item": [
+		{
+			"name": "Get Boards number",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// set key and token \r",
+							"pm.environment.set(\"key\", \"ca8b4091c85f0dce18edb19237684b34\");\r",
+							"pm.environment.set(\"token\", \"6483c7d19644fdd1d01c9d3111f920f3ac8d49088c43344c606fb55bc03c4e0c\");\r",
+							"\r",
+							"\r",
+							"let myBoards = pm.response.json().idBoards;\r",
+							"// validation of boards number \r",
+							"pm.test(\"number of created boards greater than 1\",function(){\r",
+							"    pm.expect(myBoards.length).to.above(1);\r",
+							"})\r",
+							"\r",
+							"\r",
+							"// varaibles for FirstBoardID and LastBoardID\r",
+							"pm.environment.set(\"FirstBoardID\",myBoards[0] );\r",
+							"pm.environment.set(\"LastBoardID\", myBoards[myBoards.length-1]);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.trello.com/1/members/me?boards=open&key={{key}}&token={{token}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"members",
+						"me"
+					],
+					"query": [
+						{
+							"key": "boards",
+							"value": "open"
+						},
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\",function(){\r",
+							"    pm.expect(pm.response.status).to.be.equal(\"OK\");\r",
+							"    pm.expect(pm.response.code).to.be.equal(200);\r",
+							"})\r",
+							"\r",
+							"// check the value of closed is false\r",
+							"let myResponse = pm.response.json();\r",
+							"pm.test(\"check the value of closed is false\",function(){\r",
+							"    pm.expect(myResponse.closed).to.be.false;\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}boards/?name=My Board&key={{key}}&token={{token}}",
+					"host": [
+						"{{baseUrl}}boards"
+					],
+					"path": [
+						""
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "My Board"
+						},
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Lists on a Board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"//verify that the number of lists in the response is 3 \r",
+							"let myResponse = pm.response.json();\r",
+							"pm.test(\"verify that the number of lists in the response is 3\",function(){\r",
+							"    pm.expect(myResponse.length).to.be.equal(3);\r",
+							"})\r",
+							"// set the FirstListID , LastListID\r",
+							"pm.environment.set(\"FirstListID\", myResponse[0].id);\r",
+							"pm.environment.set(\"LastListID\", myResponse[myResponse.length-1].id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/boards/{{FirstBoardID}}/lists?key={{key}}&token={{token}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"boards",
+						"{{FirstBoardID}}",
+						"lists"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create a List",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"//Verify the following keys exist in the response\r",
+							"let myResponse=pm.response.json();\r",
+							"pm.test(\"Verify the keys exist in the response\",function(){\r",
+							"  pm.expect(myResponse.hasOwnProperty(\"id\")).to.equal(true);\r",
+							"  pm.expect(myResponse.hasOwnProperty(\"name\")).to.equal(true);\r",
+							"  pm.expect(myResponse.hasOwnProperty(\"idBoard\")).to.equal(true);\r",
+							"\r",
+							"});\r",
+							"\r",
+							"// create closed varaible \r",
+							"pm.environment.set(\"archived\", !myResponse.closed);\r",
+							"pm.environment.set(\"unarchived\", myResponse.closed);\r",
+							"//Verify the most important parameters and confirm their default values \r",
+							"pm.test(\"Verify the most important parameters and confirm their default values\",function(){\r",
+							"    pm.expect(myResponse.closed).to.be.false;\r",
+							"    pm.expect(myResponse.limits.length).to.be.equal(undefined);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}lists?name=List1&idBoard={{FirstBoardID}}&key={{key}}&token={{token}}",
+					"host": [
+						"{{baseUrl}}lists"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "List1"
+						},
+						{
+							"key": "idBoard",
+							"value": "{{FirstBoardID}}"
+						},
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Archive or un-archive a list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Status code is 200.\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"//get the value of archived and un archive\r",
+							"\r",
+							"let arch = pm.environment.get(\"archived\");\r",
+							"let unarch = pm.environment.get(\"unarchived\");\r",
+							"\r",
+							"// check status of closed key depending on the value param\r",
+							"\r",
+							"let closed = pm.response.json().closed;\r",
+							"pm.test(\"check status of closed key depending on the value param\",function(){\r",
+							"    if(closed===true){\r",
+							"   pm.expect(closed).to.be.equal(arch);\r",
+							"   }\r",
+							"   else if(closed===false){\r",
+							"   pm.expect(closed).to.be.equal(unarch);\r",
+							"\r",
+							"   }\r",
+							"});\r",
+							"\r",
+							"// check that the Response Headers include a key called \"Set-Cookie\" and its value contains the text \"isEnterpriseAdmin%3Dfalse\"\r",
+							"\r",
+							"pm.test(\"the Response Headers include a key called Set-Cookie\",function(){\r",
+							"    pm.expect(pm.response.headers.has(\"Set-Cookie\")).to.be.true;\r",
+							"})\r",
+							"\r",
+							"\r",
+							"//Set-Cookie has a value contains the text isEnterpriseAdmin%3Dfalse\r",
+							"pm.test(\"Set-Cookie has a value contains the text isEnterpriseAdmin%3Dfalse\",function(){\r",
+							"    pm.expect(pm.response.headers.get(\"Set-Cookie\")).to.be.include(\"isEnterpriseAdmin%3Dfalse\");\r",
+							"})\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/lists/{{LastListID}}/closed?key={{key}}&token={{token}}&value={{unarchived}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"lists",
+						"{{LastListID}}",
+						"closed"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						},
+						{
+							"key": "value",
+							"value": "{{unarchived}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a Board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"//Response Body should contain a meaningful message \r",
+							"pm.test(\"Response Body should contain a meaningful message \",function(){\r",
+							"   pm.expect(pm.response.json()._value).to.be.equal(\"board is removed successfully\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}boards/{{FirstBoardID}}?key={{key}}&token={{token}}",
+					"host": [
+						"{{baseUrl}}boards"
+					],
+					"path": [
+						"{{FirstBoardID}}"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,246 @@
+{
+	"id": "ed954b1c-d244-47af-a39a-aa0a525ebd72",
+	"name": "fakerestapi.azurewebsites",
+	"timestamp": "2022-12-10T09:00:58.224Z",
+	"collection_id": "23975946-635f6e68-0e6b-4282-aa6d-99fa72a00eb0",
+	"folder_id": 0,
+	"environment_id": "23975946-f789b0fc-3867-4020-b25c-fc0225a68402",
+	"totalPass": 12,
+	"totalFail": 1,
+	"results": [
+		{
+			"id": "5b11aa5c-757c-4eed-9456-e12d42c2c223",
+			"name": "Get Authors",
+			"url": "https://fakerestapi.azurewebsites.net/api/v1/Authors",
+			"time": 806,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"response should be 200 OK": true,
+				"test Objects inside response contain id, idBook, firstName, lastName.": true
+			},
+			"testPassFailCounts": {
+				"response should be 200 OK": {
+					"pass": 1,
+					"fail": 0
+				},
+				"test Objects inside response contain id, idBook, firstName, lastName.": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				806
+			],
+			"allTests": [
+				{
+					"response should be 200 OK": true,
+					"test Objects inside response contain id, idBook, firstName, lastName.": true
+				}
+			]
+		},
+		{
+			"id": "ff87b663-f1b7-4198-89ac-6b28711b8c5a",
+			"name": "create author",
+			"url": "https://fakerestapi.azurewebsites.net/api/v1/Authors",
+			"time": 187,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Register a new valid Author successfully and response code 201 Created": true,
+				"firstname & lastname should be mandatory": true
+			},
+			"testPassFailCounts": {
+				"Register a new valid Author successfully and response code 201 Created": {
+					"pass": 1,
+					"fail": 0
+				},
+				"firstname & lastname should be mandatory": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				187
+			],
+			"allTests": [
+				{
+					"Register a new valid Author successfully and response code 201 Created": true,
+					"firstname & lastname should be mandatory": true
+				}
+			]
+		},
+		{
+			"id": "b79bc961-e49d-4836-a545-efa68a840ada",
+			"name": "AuthorsBook",
+			"url": "https://fakerestapi.azurewebsites.net/api/v1/Authors/authors/books/10",
+			"time": 115,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"response should be 200 OK": true,
+				"Searching with valid idBook should return relative data in response body.": true
+			},
+			"testPassFailCounts": {
+				"response should be 200 OK": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Searching with valid idBook should return relative data in response body.": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				115
+			],
+			"allTests": [
+				{
+					"response should be 200 OK": true,
+					"Searching with valid idBook should return relative data in response body.": true
+				}
+			]
+		},
+		{
+			"id": "ef852818-4c5a-402c-be82-81ca578352dd",
+			"name": "Update user",
+			"url": "https://fakerestapi.azurewebsites.net/api/v1/Authors/100",
+			"time": 129,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"response should be 200 OK": true,
+				"Author's data is updated successfully.": true
+			},
+			"testPassFailCounts": {
+				"response should be 200 OK": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Author's data is updated successfully.": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				129
+			],
+			"allTests": [
+				{
+					"response should be 200 OK": true,
+					"Author's data is updated successfully.": true
+				}
+			]
+		},
+		{
+			"id": "c4fd5d35-6ff5-4415-b388-9fe364a1caec",
+			"name": "Get Single User",
+			"url": "https://fakerestapi.azurewebsites.net/api/v1/Authors/100",
+			"time": 104,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"response should be 200 OK": true,
+				"The author's data is changed in GET request.": true,
+				"Author's data is updated successfully and the old first name and the updated are not the same, and the old last name and the updated are not the same,": false
+			},
+			"testPassFailCounts": {
+				"response should be 200 OK": {
+					"pass": 1,
+					"fail": 0
+				},
+				"The author's data is changed in GET request.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Author's data is updated successfully and the old first name and the updated are not the same, and the old last name and the updated are not the same,": {
+					"pass": 0,
+					"fail": 1
+				}
+			},
+			"times": [
+				104
+			],
+			"allTests": [
+				{
+					"response should be 200 OK": true,
+					"The author's data is changed in GET request.": true,
+					"Author's data is updated successfully and the old first name and the updated are not the same, and the old last name and the updated are not the same,": false
+				}
+			]
+		},
+		{
+			"id": "29956ef8-9461-468d-9b3c-d2053bc480e1",
+			"name": "Delete user",
+			"url": "https://fakerestapi.azurewebsites.net/api/v1/Authors/100",
+			"time": 115,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"response should be 200 OK": true,
+				"Given user deleted successfully": true
+			},
+			"testPassFailCounts": {
+				"response should be 200 OK": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Given user deleted successfully": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				115
+			],
+			"allTests": [
+				{
+					"response should be 200 OK": true,
+					"Given user deleted successfully": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 1456,
+	"collection": {
+		"requests": [
+			{
+				"id": "5b11aa5c-757c-4eed-9456-e12d42c2c223",
+				"method": "GET"
+			},
+			{
+				"id": "ff87b663-f1b7-4198-89ac-6b28711b8c5a",
+				"method": "POST"
+			},
+			{
+				"id": "b79bc961-e49d-4836-a545-efa68a840ada",
+				"method": "GET"
+			},
+			{
+				"id": "ef852818-4c5a-402c-be82-81ca578352dd",
+				"method": "PUT"
+			},
+			{
+				"id": "c4fd5d35-6ff5-4415-b388-9fe364a1caec",
+				"method": "GET"
+			},
+			{
+				"id": "29956ef8-9461-468d-9b3c-d2053bc480e1",
+				"method": "DELETE"
+			}
+		]
+	}
+}

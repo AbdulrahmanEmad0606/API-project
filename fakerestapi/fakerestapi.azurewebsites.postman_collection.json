@@ -1,0 +1,298 @@
+{
+	"info": {
+		"_postman_id": "635f6e68-0e6b-4282-aa6d-99fa72a00eb0",
+		"name": "fakerestapi.azurewebsites",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23975946"
+	},
+	"item": [
+		{
+			"name": "Authors",
+			"item": [
+				{
+					"name": "Get Authors",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response should be 200 OK\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"    pm.expect(pm.response.status).to.equal(\"OK\");\r",
+									"});\r",
+									"\r",
+									"let myResponse = pm.response.json()[0];\r",
+									"\r",
+									"\r",
+									"// check that test Objects inside response contain id, idBook, firstName, lastName\r",
+									"pm.test(\"test Objects inside response contain id, idBook, firstName, lastName.\", function () {\r",
+									"    pm.expect(myResponse.hasOwnProperty(\"id\")).to.equal(true);\r",
+									"    pm.expect(myResponse.hasOwnProperty(\"idBook\")).to.equal(true);\r",
+									"    pm.expect(myResponse.hasOwnProperty(\"firstName\")).to.equal(true);\r",
+									"    pm.expect(myResponse.hasOwnProperty(\"lastName\")).to.equal(true);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/Authors",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Authors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create author",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Register a new valid Author successfully and response code 201 Created\",function(){\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"    pm.expect(pm.response.status).to.equal(\"OK\")\r",
+									"})\r",
+									"\r",
+									"// check that the firstname & lastname should be mandatory\r",
+									"let myResponse = pm.response.json();\r",
+									"pm.test(\"firstname & lastname should be mandatory\",function(){\r",
+									"   pm.expect(myResponse.firstName).to.not.oneOf([\"\",\" \"]);\r",
+									"   pm.expect(myResponse.lastName).to.not.oneOf([\"\",\" \"]);\r",
+									"})\r",
+									"\r",
+									"// set user id as an env varialble to use it in edit and delete end-points\r",
+									"pm.environment.set(\"userId\", myResponse.id);\r",
+									"pm.environment.set(\"firstName\", myResponse.firstName);\r",
+									"pm.environment.set(\"lastName\", myResponse.lastName);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 100,\r\n  \"idBook\": 100,\r\n  \"firstName\": \"jj\",\r\n  \"lastName\": \"oo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/Authors",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Authors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AuthorsBook",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response should be 200 OK\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"    pm.expect(pm.response.status).to.equal(\"OK\");\r",
+									"});\r",
+									"\r",
+									"//check for Searching with valid idBook should return relative data in response body.\r",
+									"\r",
+									"let bookId = pm.environment.set(\"book_id\", 10);\r",
+									"pm.test(\"Searching with valid idBook should return relative data in response body.\",function(){\r",
+									"  pm.expect(pm.response.idBook).to.be.equal(bookId);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/Authors/authors/books/{{book_id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Authors",
+								"authors",
+								"books",
+								"{{book_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response should be 200 OK\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"    pm.expect(pm.response.status).to.equal(\"OK\");\r",
+									"});\r",
+									"\r",
+									"// Check that Author's data is updated successfully.\r",
+									"let firstNAme = pm.environment.get(\"firstName\");\r",
+									"let lastNAme = pm.environment.get(\"lastName\");\r",
+									"let myResponse = pm.response.json();\r",
+									"pm.test(\"Author's data is updated successfully.\",function(){\r",
+									"    pm.expect(myResponse.firstName).to.not.equal(firstNAme);\r",
+									"    pm.expect(myResponse.firstName).to.not.equal(lastNAme);\r",
+									"})\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\":{{userId}},\r\n  \"idBook\": 0,\r\n  \"firstName\": \"Mahmoud\",\r\n  \"lastName\": \"Emad\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/Authors/{{userId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Authors",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response should be 200 OK\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"    pm.expect(pm.response.status).to.equal(\"OK\");\r",
+									"});\r",
+									"\r",
+									"//check that The author's data is changed in GET request.\r",
+									"// by validating on the sent user id and the user id that returns from the response \r",
+									"\r",
+									"let myResponse = pm.response.json();\r",
+									"let userId = pm.environment.get(\"userId\");\r",
+									"pm.test(\"The author's data is changed in GET request.\",function(){\r",
+									"    pm.expect(myResponse.id).to.be.equal(userId)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Author's data is updated successfully and the old first name and the updated are not the same, and the old last name and the updated are not the same,\",function(){\r",
+									"    pm.expect(myResponse.firstName).to.equal(firstNAme);\r",
+									"    pm.expect(myResponse.firstName).to.equal(lastNAme);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/Authors/{{userId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Authors",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response should be 200 OK\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"    pm.expect(pm.response.status).to.equal(\"OK\");\r",
+									"});\r",
+									"//check that the given item is deleted successfully by validating on the header by content-length \r",
+									"pm.test(\"Given user deleted successfully\",function(){\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Length\")).to.be.equal(\"0\")\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/Authors/{{userId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Authors",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,89 @@
+=================
+1- Get Author
+=================
+
+ API: GET /api/v1/Authors
+ Test Case: response should be 200 OK
+ Expected Result: 200 OK
+ Actual Result: 200 OK
+ Status: Pass	
+--------------------------------------------------------------------------
+ API: GET /api/v1/Authors
+
+ Test Case: check that test Objects inside response contain id, idBook, firstName, lastName
+ Expected Result: 200 OK
+ Actual Result: 200 OK
+ Status: Pass
+
+============================================================================================================
+============================================================================================================
+
+2- create author
+================
+
+ API: POST /api/v1/Authors
+
+ Test Case: Register a new valid Author successfully and response code "200 OK"
+ Expected Result: 200 Created
+ Actual Result: 200 Created
+ Status: Pass
+
+-----------------------------------------------------------------------------
+ 
+ Test Case: firstname & lastname should be mandatory
+ Expected Result: 200 OK
+ Actual Result: 200 OK
+ Status: Pass
+============================================================================================================
+============================================================================================================
+
+3- AuthorsBook
+================
+
+ API: GET /api/v1/Authors/authors/books/{idBook}
+
+ Test Case: Searching with valid idBook should return relative data in response body.
+ Expected Result: 200 OK
+ Actual Result: 200 OK
+ Status: Pass	
+============================================================================================================
+============================================================================================================
+
+4- Update user
+================
+
+ API : PUT /api/v1/Authors/{id}
+
+ Test Case : Author's data is updated successfully.
+ Expected Result: 200 OK
+ Actual Result: 200 OK
+ Status: Pass	
+
+
+============================================================================================================
+============================================================================================================
+5- get a single user 
+======================
+ API: GET /api/v1/Authors/{id}
+ Test case 1: The author's data is changed in GET request.
+ Expected Result: 200 OK
+ Actual Result: 200 OK
+ Status: Pass	  
+-----------------------------------------------
+ API : GET/api/v1/Authors/{id}
+
+ Test Case:  the first name and last name are the same in the update even if it fails
+ Expected Result: 200 OK
+ Actual Result: Assertion Error 
+ status: Fail
+
+============================================================================================================
+============================================================================================================
+
+6- Delete user
+================
+  API: /api/v1/Authors/{{userId}}
+  Test Cas: Given user deleted successfully
+   Expected Result: 200 OK
+   Actual Result: 200 OK
+   Status: Pass	
