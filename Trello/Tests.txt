@@ -1,0 +1,119 @@
+=================
+1- Get Boards number
+=================
+
+ API: GET /members/me?boards=open&key={{key}}&token={{token}}
+ Test Case: check that the number of created boards greater than 1
+ Expected Result: 200 OK
+ Actual Result: 200 OK
+ Status: Pass	
+============================================================================================================
+============================================================================================================
+
+2- Create Board
+================
+
+ API: POST boards/?key={{key}}&token={{token}}&name={{name}}
+
+ Test Case: check that the Status code is 200
+ Expected Result: 200 Created
+ Actual Result: 200 Created
+ Status: Pass
+
+-----------------------------------------------------------------------------
+ 
+ Test Case: check the value of closed is false
+ Expected Result: 200 OK
+ Actual Result: 200 OK
+ Status: Pass
+-----------------------------------------------------------------------------
+ Test Case: check the value of permissionLevel is private
+ Expected Result: 200 OK
+ Actual Result: 200 OK
+ Status: Pass
+-----------------------------------------------------------------------------
+ Test Case: check the value of canBePublic is true
+ Expected Result: 200 OK
+ Actual Result: 200 OK
+ Status: Pass
+-----------------------------------------------------------------------------
+ Test Case: check the value of canInvite is true
+ Expected Result: 200 OK
+ Actual Result: 200 OK
+ Status: Pass
+============================================================================================================
+
+3- Get Lists on a Board
+================
+API: GET boards/{{FirstBoardID}}/lists?key={{key}}&token={{token}}
+
+ Test Case: check that the Status code is 200
+ Expected Result: 200 OK
+ Actual Result: 200 OK
+ Status: Pass	
+
+--------------------------------------------------------------------------
+ Test Case: verify that the number of lists in the response is 3
+ Expected Result: 200 OK
+ Actual Result: 200 OK
+ Status: Pass	
+============================================================================================================
+============================================================================================================
+
+4- Create a List
+================
+
+ API : POST lists?name=First List&idBoard={{FirstBoardID}}&key={{key}}&token={{token}}
+
+ Test Case : check that the status code is 200
+ Expected Result: 200 OK
+ Actual Result: 200 OK
+ Status: Pass	
+--------------------------------------------------------------------------
+ Test Case: Verify the keys exist in the response
+ Expected Result: 200 OK
+ Actual Result: 200 OK
+ Status: Pass
+============================================================================================================
+============================================================================================================
+5- Archive or un-archive a list
+======================
+ API: GET lists/{{LastListID}}/closed?key={{key}}&token={{token}}&value={{archived}}
+ Test case 1: check that the Status code is 200
+ Expected Result: 200 OK
+ Actual Result: 200 OK
+ Status: Pass	  
+-----------------------------------------------
+ Test Case:  check status of closed key depending on the value param
+ Expected Result: 200 OK
+ Actual Result: 200 OK
+ status: pass
+--------------------------------------------------------------------------
+Test Case:  the Response Headers include a key called Set-Cookie
+ Expected Result: 200 OK
+ Actual Result: Assertion Error 
+ status: pass
+--------------------------------------------------------------------------
+Test Case:  check that the Set-Cookie has a value contains the text isEnterpriseAdmin%3Dfalse
+ Expected Result: 200 OK
+ Actual Result: 200 OK
+ status: pass
+
+
+============================================================================================================
+============================================================================================================
+
+6- Delete a Board
+================
+  API: boards/{{FirstBoardID}}?key={{key}}&token={{token}}
+  Test Cas: Status code is 200
+   Expected Result: 200 OK
+   Actual Result: 200 OK
+   Status: Pass	
+--------------------------------------------------------------------------
+Test Case:  check that the Response Body should contain a meaningful message
+ Expected Result: 200 OK
+ Actual Result: Assertion Error 
+ status: Fail
+
+

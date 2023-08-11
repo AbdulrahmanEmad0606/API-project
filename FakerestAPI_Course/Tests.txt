@@ -10,7 +10,7 @@
 --------------------------------------------------------------------------
  API: GET /api/v1/Authors
 
- Test Case: check that test Objects inside response contain id, idBook, firstName, lastName
+ Test Case: Check that the response contains id, idBook, firstName, lastName
  Expected Result: 200 OK
  Actual Result: 200 OK
  Status: Pass
@@ -23,7 +23,7 @@
 
  API: POST /api/v1/Authors
 
- Test Case: Register a new valid Author successfully and response code "200 OK"
+ Test Case: check that the Author can register successfully and response code 200 Created
  Expected Result: 200 Created
  Actual Result: 200 Created
  Status: Pass
@@ -39,10 +39,17 @@
 
 3- AuthorsBook
 ================
+API: GET /api/v1/Authors/authors/books/{idBook}
 
+ Test Case: check that the response should be 200 OK
+ Expected Result: 200 OK
+ Actual Result: 200 OK
+ Status: Pass	
+
+--------------------------------------------------------------------------
  API: GET /api/v1/Authors/authors/books/{idBook}
 
- Test Case: Searching with valid idBook should return relative data in response body.
+ Test Case: check that the user can search for a valid idBook and the rturned data should be relative in response body.
  Expected Result: 200 OK
  Actual Result: 200 OK
  Status: Pass	
@@ -74,8 +81,8 @@
 
  Test Case:  the first name and last name are the same in the update even if it fails
  Expected Result: 200 OK
- Actual Result: Assertion Error 
- status: Fail
+ Actual Result: 200 OK 
+ status: Pass
 
 ============================================================================================================
 ============================================================================================================

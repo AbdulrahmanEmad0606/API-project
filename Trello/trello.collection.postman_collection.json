@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "8b3de148-f27e-42a0-b0da-4d983775c458",
+		"_postman_id": "8c2593c2-fdab-44a5-a3fb-1d316524eaeb",
 		"name": "trello.collection",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "23975946"
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "23975946",
+		"_collection_link": "https://www.postman.com/planetary-star-118704/workspace/api-course/collection/23975946-8c2593c2-fdab-44a5-a3fb-1d316524eaeb?action=share&source=collection_link&creator=23975946"
 	},
 	"item": [
 		{
@@ -13,21 +14,17 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"// set key and token \r",
-							"pm.environment.set(\"key\", \"ca8b4091c85f0dce18edb19237684b34\");\r",
-							"pm.environment.set(\"token\", \"6483c7d19644fdd1d01c9d3111f920f3ac8d49088c43344c606fb55bc03c4e0c\");\r",
-							"\r",
 							"\r",
 							"let myBoards = pm.response.json().idBoards;\r",
 							"// validation of boards number \r",
-							"pm.test(\"number of created boards greater than 1\",function(){\r",
+							"pm.test(\"check that the number of created boards greater than 1\",function(){\r",
 							"    pm.expect(myBoards.length).to.above(1);\r",
 							"})\r",
 							"\r",
 							"\r",
 							"// varaibles for FirstBoardID and LastBoardID\r",
-							"pm.environment.set(\"FirstBoardID\",myBoards[0] );\r",
-							"pm.environment.set(\"LastBoardID\", myBoards[myBoards.length-1]);\r",
+							"pm.collectionVariables.set(\"FirstBoardID\",myBoards[0] );\r",
+							"pm.collectionVariables.set(\"LastBoardID\", myBoards[myBoards.length-1]);\r",
 							"\r",
 							""
 						],
@@ -76,7 +73,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\",function(){\r",
+							"pm.test(\"check that the Status code is 200\",function(){\r",
 							"    pm.expect(pm.response.status).to.be.equal(\"OK\");\r",
 							"    pm.expect(pm.response.code).to.be.equal(200);\r",
 							"})\r",
@@ -85,7 +82,25 @@
 							"let myResponse = pm.response.json();\r",
 							"pm.test(\"check the value of closed is false\",function(){\r",
 							"    pm.expect(myResponse.closed).to.be.false;\r",
+							"})\r",
+							"pm.test(\"check the value of permissionLevel is private\",function(){\r",
+							"    pm.expect(myResponse.prefs.permissionLevel).to.be.equals(\"private\");\r",
+							" })\r",
+							"pm.test(\"check the value of canBePublic is true\",function(){\r",
+							"    pm.expect(myResponse.prefs.canBePublic).to.be.true;\r",
+							"})\r",
+							"pm.test(\"check the value of canInvite is true\",function(){\r",
+							"    pm.expect(myResponse.prefs.canInvite).to.be.true;\r",
 							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"name\",\"Sep Plan\");"
 						],
 						"type": "text/javascript"
 					}
@@ -95,7 +110,7 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}boards/?name=My Board&key={{key}}&token={{token}}",
+					"raw": "{{baseUrl}}boards/?key={{key}}&token={{token}}&name={{name}}",
 					"host": [
 						"{{baseUrl}}boards"
 					],
@@ -104,16 +119,16 @@
 					],
 					"query": [
 						{
-							"key": "name",
-							"value": "My Board"
-						},
-						{
 							"key": "key",
 							"value": "{{key}}"
 						},
 						{
 							"key": "token",
 							"value": "{{token}}"
+						},
+						{
+							"key": "name",
+							"value": "{{name}}"
 						}
 					]
 				}
@@ -127,7 +142,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
+							"pm.test(\"check that the Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
@@ -137,8 +152,8 @@
 							"    pm.expect(myResponse.length).to.be.equal(3);\r",
 							"})\r",
 							"// set the FirstListID , LastListID\r",
-							"pm.environment.set(\"FirstListID\", myResponse[0].id);\r",
-							"pm.environment.set(\"LastListID\", myResponse[myResponse.length-1].id);"
+							"pm.collectionVariables.set(\"FirstListID\", myResponse[0].id);\r",
+							"pm.collectionVariables.set(\"LastListID\", myResponse[myResponse.length-1].id);"
 						],
 						"type": "text/javascript"
 					}
@@ -178,7 +193,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
+							"pm.test(\"check that the status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
@@ -192,8 +207,8 @@
 							"});\r",
 							"\r",
 							"// create closed varaible \r",
-							"pm.environment.set(\"archived\", !myResponse.closed);\r",
-							"pm.environment.set(\"unarchived\", myResponse.closed);\r",
+							"pm.collectionVariables.set(\"archived\", !myResponse.closed);\r",
+							"pm.collectionVariables.set(\"unarchived\", myResponse.closed);\r",
 							"//Verify the most important parameters and confirm their default values \r",
 							"pm.test(\"Verify the most important parameters and confirm their default values\",function(){\r",
 							"    pm.expect(myResponse.closed).to.be.false;\r",
@@ -208,14 +223,14 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}lists?name=List1&idBoard={{FirstBoardID}}&key={{key}}&token={{token}}",
+					"raw": "{{baseUrl}}lists?name=First List&idBoard={{FirstBoardID}}&key={{key}}&token={{token}}",
 					"host": [
 						"{{baseUrl}}lists"
 					],
 					"query": [
 						{
 							"key": "name",
-							"value": "List1"
+							"value": "First List"
 						},
 						{
 							"key": "idBoard",
@@ -242,13 +257,13 @@
 					"script": {
 						"exec": [
 							"//Status code is 200.\r",
-							"pm.test(\"Status code is 200\", function () {\r",
+							"pm.test(\"check that the Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"//get the value of archived and un archive\r",
 							"\r",
-							"let arch = pm.environment.get(\"archived\");\r",
-							"let unarch = pm.environment.get(\"unarchived\");\r",
+							"let arch = pm.collectionVariables.get(\"archived\");\r",
+							"let unarch = pm.collectionVariables.get(\"unarchived\");\r",
 							"\r",
 							"// check status of closed key depending on the value param\r",
 							"\r",
@@ -271,7 +286,7 @@
 							"\r",
 							"\r",
 							"//Set-Cookie has a value contains the text isEnterpriseAdmin%3Dfalse\r",
-							"pm.test(\"Set-Cookie has a value contains the text isEnterpriseAdmin%3Dfalse\",function(){\r",
+							"pm.test(\"check that the Set-Cookie has a value contains the text isEnterpriseAdmin%3Dfalse\",function(){\r",
 							"    pm.expect(pm.response.headers.get(\"Set-Cookie\")).to.be.include(\"isEnterpriseAdmin%3Dfalse\");\r",
 							"})\r",
 							"\r",
@@ -325,7 +340,7 @@
 							"});\r",
 							"\r",
 							"//Response Body should contain a meaningful message \r",
-							"pm.test(\"Response Body should contain a meaningful message \",function(){\r",
+							"pm.test(\"check that the Response Body should contain a meaningful message \",function(){\r",
 							"   pm.expect(pm.response.json()._value).to.be.equal(\"board is removed successfully\");\r",
 							"});"
 						],
@@ -357,6 +372,71 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://api.trello.com/1/",
+			"type": "string"
+		},
+		{
+			"key": "key",
+			"value": "6f63f1a62194b35036daca814df51620",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "ATTA2ec0ba07daa89c7a2093b93ea72c638f30420c5be4d19301d191ac80af76db7bC050B8A6",
+			"type": "string"
+		},
+		{
+			"key": "FirstBoardID",
+			"value": ""
+		},
+		{
+			"key": "LastBoardID",
+			"value": ""
+		},
+		{
+			"key": "name",
+			"value": ""
+		},
+		{
+			"key": "FirstListID",
+			"value": ""
+		},
+		{
+			"key": "LastListID",
+			"value": ""
+		},
+		{
+			"key": "archived",
+			"value": ""
+		},
+		{
+			"key": "unarchived",
+			"value": ""
 		}
 	]
 }
